@@ -1,0 +1,131 @@
+//Tests if the snake touches the food
+//if it does, then increments the size of the snake
+void testFood()
+{
+  if (snake.position.x == food.position.x)
+  {
+    // println(food.position.x, food.position.y);
+    if (snake.position.y == food.position.y)
+    {
+      //Increases snake size, and randomises food location
+      snake.len++;
+      randomise();
+    }
+  }
+  for (int i = 0; i < spawnrate; i++)
+  {
+    if (falling[i].position.x == food.position.x)
+    {
+      if (falling[i].position.y == food.position.y)
+      {
+        speedup++;
+        randomise();
+      }
+    }
+  }
+}
+
+//Test, checks if a key was pressed, then checks if the snake
+//Is about to touch itself, if it is, then it dies
+//Game over set to true
+void testTouchSelf()
+{
+  for (int i = snake.len; i > 0; i--)
+  {
+    if ((key == 'a' || key == 'd') &&(snake.position.x + snake.accel == xPos[i]) && (snake.position.y == yPos[i]))
+    {
+      gameOver = true;
+    }
+  }
+  for (int i = snake.len; i > 0; i--)
+  {
+    if ((key == 'w' || key == 's') &&(snake.position.x == xPos[i]) && (snake.position.y + snake.accel == yPos[i]))
+    {
+      gameOver = true;
+    }
+  }
+  //Just immediately call a splash screen at these instances
+  testGameOver();
+}
+
+//Checks if the snake has gone past the wall, if it has, it dies
+//Game over set to true
+// BARELY WORKS //
+void testTouchWall()
+{
+  if (snake.position.x == 0 - sqrsize)
+  {
+    snake.position.x = (width - sqrsize);
+    if(key != 'a')
+    {
+      key = oldKey;
+    }
+  } 
+  else if (snake.position.x == width)
+  {
+    snake.position.x = (0);
+    if(key != 'd')
+    {
+      key = oldKey;
+    }
+  } 
+  else if (snake.position.y == (0 - sqrsize))
+  {
+    if(key != 'w')
+    {
+      key = oldKey;
+    }
+    gameOver = true;
+  } 
+  else if (snake.position.y == height)
+  {
+    if(key != 's')
+    {
+      key = oldKey;
+    }
+    gameOver = true;
+  }
+}
+
+
+//Does not work even remotely
+void testTouchFalling()
+{
+  for ( int i = 0; i <spawnrate; i++)
+  {
+    if (/*( key == 'w' || key == 's') &&*/ (xPos[0] == falling[i].position.x) && (yPos[0] == falling[i].position.y))
+    {
+      if(falling[i].powerup == false)
+      {
+        if(snake.health == 1)
+        {
+          gameOver = true;
+        }
+         else
+         {
+           snake.health--;
+           randomiseFall(i);
+         }
+        testGameOver();
+      }
+      else if ( falling[i].powerup == true)
+     {
+       choosePower(i);
+     }
+    }
+  }
+}
+
+//Tests if you have died and begins a splash screen
+void testGameOver()
+{
+ // println(gameOver);
+  if ( gameOver == true)
+  {
+    frameRate(60);
+    setUpScore();
+    splashScreen = true;
+  }
+}
+
+

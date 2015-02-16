@@ -1,0 +1,46 @@
+//A variable to choose the power up
+int choice;
+//This is the rarity, so if it controls how often a powerup will spawn
+int rarity = 5;
+
+// FALL SLOW VARIABLES //
+boolean slow = false;
+//This is the count variable that will count the amount of frames that the slow down power will last
+int count = 0;
+
+//This decides what power up you get
+void poweredUp(int i)
+{
+  if(choice == 1)
+  {
+      if(snake.len > 4)
+      {
+        snake.len -= 1;
+      }
+      inc++;
+      randomiseFall(i);
+    }
+  else if(choice == 2)
+  {
+    speedup -= 1;
+    randomiseFall(i);
+  }
+  else if(choice == 3)
+  {
+    snake.health += 1;
+    randomiseFall(i);
+  }
+  else if( choice == 4)
+  {
+    slow = true;
+    randomiseFall(i);
+  }
+}
+
+//This is the random number generator that decides what number power you get
+void choosePower(int i)
+{
+  choice = (int)random(0,5);
+  poweredUp(i);
+}
+

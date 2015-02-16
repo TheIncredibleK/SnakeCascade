@@ -1,0 +1,106 @@
+// For the size of the snake
+int maxsize = 100;
+//Array to hold positions of the snake so that I can control it's length and draw it 
+// NOT FLOAT LIST //
+//The reason this is not a float list is due to weird problems I was getting upon trying to use a float list
+//I couldn't add or remove pieces from it
+//I decided to hand it in as is, without that feature, despite the fact it would mean it is inefficient with memory
+float xPos[] = new float[maxsize];
+float yPos[] = new float[maxsize];
+//Variable to hold the last key pressed to control
+char oldKey = ' ';
+//The controllable object class
+class controlOb
+{
+  PImage image;
+  PVector position;
+  int accel;
+  int len;
+  int speed;
+  int health;
+}
+
+//Declaring new controllable object, snake
+controlOb snake = new controlOb();
+
+//Called once to initalise the snake
+void setupsnake()
+{
+  snake.position = new PVector(sqrsize * 5, sqrsize);
+  snake.len = 3;
+  snake.image = loadImage("Heart2.png");
+  key = 's';
+  oldKey = 's';
+  snake.accel = sqrsize;
+  snake.health = 2;
+  for(int i = 0; i < 3; i++)
+  {
+    xPos[i] = snake.position.x;
+    yPos[i] = snake.position.y;
+  }
+  // snake.health = 5;
+}
+
+//Draws the snake on the screen
+void drawSnake()
+{
+
+  // COLOURS 
+  //Sets the fill of the snake to black
+    fill(0);
+    
+    
+    
+
+    //Figure it out NUMB NUTS
+
+
+    //Sets xPos and yPos elements 0 to be current position
+
+    xPos[0] = snake.position.x;
+    yPos[0] = snake.position.y;
+    //Draws current position
+    rect(snake.position.x, snake.position.y, sqrsize, sqrsize); 
+
+    text("Health: " + snake.health, width - 30, sqrsize/2);
+    
+    //Draws the body
+    for (int i = snake.len; i > 0; i--) 
+    {
+      if(i == 1)
+      {
+
+        fill(255, 0, 0);
+      }
+      else
+      {
+        fill(0);
+      }
+      xPos[i] = xPos[i-1]; 
+      yPos[i] = yPos[i-1]; 
+      rect(xPos[i], yPos[i], sqrsize, sqrsize);
+      testTouchFalling();
+    }
+
+}
+
+
+//Does the moving dirty work
+void moveSnake()
+{
+  if (gameOver == false)
+  {
+    //Checks what key was pressed, if it's horizontal or vertical
+    //Adds values to those axes
+    if (key == 'a' || key == 'd')
+    {
+      snake.position.x += snake.accel;
+    } 
+    else if ( (key == 'w') ||( key == 's'))
+    {
+      snake.position.y += snake.accel;
+    }
+    moveCount = true;
+  }
+}
+
